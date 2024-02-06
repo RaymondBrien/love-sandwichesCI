@@ -53,6 +53,17 @@ def validate_data(values):
       
     return True
 
-data = get_sales_data()
 
+def update_sales_data(data):
+    """
+    Updates the sales data worksheet in the google sheet, add new row with list data provided.
+    """
+    print('Updating sales data...\n ')
+    sales_worksheet = SHEET.worksheet("sales") #adds the sales data worksheet in the google sheet, add new row with list data
+    sales_worksheet.append_row(data)
+    print('Sales data updated!\n')
+
+data = get_sales_data()
+sales_data = [int(num) for num in data] #convert all sales data to integers to be accepte by google sheets
+update_sales_data(sales_data)
  
