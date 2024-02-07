@@ -3,6 +3,7 @@
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 import gspread
 from google.oauth2.service_account import Credentials
+from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -37,7 +38,7 @@ def get_sales_data():
 def validate_data(values):
     """
     Inside the try, converts all string values to integers.
-    Rasies value error if strings cannot be converted to integers, 
+    Raises value error if strings cannot be converted to integers, 
     or if the number of values is not 6.
     """
     print(values)
@@ -59,11 +60,36 @@ def update_sales_data(data):
     Updates the sales data worksheet in the google sheet, add new row with list data provided.
     """
     print('Updating sales data...\n ')
-    sales_worksheet = SHEET.worksheet("sales") #adds the sales data worksheet in the google sheet, add new row with list data
-    sales_worksheet.append_row(data)
+    sales_worksheet = SHEET.worksheet("sales") #find the sales data worksheet in google sheets
+    sales_worksheet.append_row(data) #add new row with list data provided
     print('Sales data updated!\n')
 
-data = get_sales_data()
-sales_data = [int(num) for num in data] #convert all sales data to integers to be accepte by google sheets
-update_sales_data(sales_data)
+def calculate_surplus_data(sales_row):
+    """
+    Calculates the surplus data for the sales data provided.
+    Surplus data = stock - sold 
+    If negative, more were needed. If positive, less were needed.
+    """
+    print('Calculating surplus data...\n ')
+    stock = SHEET.worksheet("stock").get_all_values() 
+    stock_row = stock[-1]
+    pprint(stock_row)
+
+
+    print('Surplus data calculated!\n')
+
+    
+    
+def main():
+    """
+    Call all program functions
+    """
+    data = get_sales_data()
+    sales_data = [int(num) for num in data] #convert all sales data to integers to be accepte by google sheets
+    update_sales_data(sales_data)
+    calculate_surplus_data(sales_data)
+
+print('Welcome to Love Sandwiches!\n')
+main()
+ 
  
