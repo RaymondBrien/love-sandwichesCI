@@ -73,19 +73,24 @@ def calculate_surplus_data(sales_row):
     print('Calculating surplus data...\n ')
     stock = SHEET.worksheet("stock").get_all_values() 
     stock_row = stock[-1]
-
     surplus_data = []
     
     for stock, sales in zip(stock_row, sales_row):
         surplus = int(stock) - sales
         surplus_data.append(surplus)
-
+    print(f'surplus data: {surplus_data}')
     return surplus_data
 
-
-    print('Surplus data calculated!\n')
-
+def update_surplus_data(data):
+    """
+    Updates the surplus data worksheet in the google sheet, add new row with list data provided.
+    """
+    print('Updating surplus data...\n ')
+    surplus_worksheet = SHEET.worksheet("surplus") #find the sales data worksheet in google sheets
+    surplus_worksheet.append_row(data) #add new row with list data provided
     
+    print('Sales data updated!\n')
+
     
 def main():
     """
@@ -95,7 +100,7 @@ def main():
     sales_data = [int(num) for num in data] #convert all sales data to integers to be accepte by google sheets
     update_sales_data(sales_data)
     new_surplus_data = calculate_surplus_data(sales_data)
-    print(new_surplus_data)
+    update_surplus_data(new_surplus_data)
 
 print('Welcome to Love Sandwiches!\n')
 main()
