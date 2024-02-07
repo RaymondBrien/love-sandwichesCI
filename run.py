@@ -55,15 +55,6 @@ def validate_data(values):
     return True
 
 
-def update_sales_data(data):
-    """
-    Updates the sales data worksheet in the google sheet, add new row with list data provided.
-    """
-    print('Updating sales data...\n ')
-    sales_worksheet = SHEET.worksheet("sales") #find the sales data worksheet in google sheets
-    sales_worksheet.append_row(data) #add new row with list data provided
-    print('Sales data updated!\n')
-
 def calculate_surplus_data(sales_row):
     """
     Calculates the surplus data for the sales data provided.
@@ -81,26 +72,27 @@ def calculate_surplus_data(sales_row):
     print(f'surplus data: {surplus_data}')
     return surplus_data
 
-def update_surplus_data(data):
-    """
-    Updates the surplus data worksheet in the google sheet, add new row with list data provided.
-    """
-    print('Updating surplus data...\n ')
-    surplus_worksheet = SHEET.worksheet("surplus") #find the sales data worksheet in google sheets
-    surplus_worksheet.append_row(data) #add new row with list data provided
-    
-    print('Sales data updated!\n')
 
-    
+def update_worksheet(data, worksheet): 
+    """ 
+    Compare sales and surplus data and update the worksheet in the google sheet.
+    Negative surplus = extra needing to be made. 
+    Positive surplus = waste.
+    """
+    print(f'Updating {worksheet} worksheet!\n')
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print(f'{worksheet} worksheet updated!\n')
+
 def main():
     """
     Call all program functions
     """
     data = get_sales_data()
     sales_data = [int(num) for num in data] #convert all sales data to integers to be accepte by google sheets
-    update_sales_data(sales_data)
+    update_worksheet(sales_data, 'sales')
     new_surplus_data = calculate_surplus_data(sales_data)
-    update_surplus_data(new_surplus_data)
+    update_worksheet(new_surplus_data, 'surplus')
 
 print('Welcome to Love Sandwiches!\n')
 main()
