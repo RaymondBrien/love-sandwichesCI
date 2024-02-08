@@ -84,6 +84,16 @@ def update_worksheet(data, worksheet):
     worksheet_to_update.append_row(data)
     print(f'{worksheet} worksheet updated!\n')
 
+def get_last_five_entries_sales():
+    """
+    Gets last 5 entries of sales data, returns mean average plus 10% for sales incentive.
+    """
+    sales = SHEET.worksheet("sales")
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    return columns 
 def main():
     """
     Call all program functions
@@ -95,6 +105,6 @@ def main():
     update_worksheet(new_surplus_data, 'surplus')
 
 print('Welcome to Love Sandwiches!\n')
-main()
- 
+# main()
+sales_columns = get_last_five_entries_sales()
  
